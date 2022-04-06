@@ -62,6 +62,7 @@ public:
         this->address.sin_family = AF_INET;
         this->address.sin_port = htons(port);
         this->address.sin_addr.s_addr = ipv4;
+        this->isConnecting = true;
 
         this->setTimeout(5);
 
@@ -69,6 +70,8 @@ public:
         if (connect(this->sock, (const sockaddr *)&this->address, sizeof(sockaddr_in)) < 0)
         {
             onError(errno, "Connection failed to the host.");
+            this->isConnecting = false;
+            this->isClosed = true;
             this->setTimeout(0);
             return;
         }
@@ -80,6 +83,8 @@ public:
 
         // Start listening from server:
         this->Listen();
+        this->isConnecting = false;
+        this->isClosed = false;
     }
 
     void Listen()

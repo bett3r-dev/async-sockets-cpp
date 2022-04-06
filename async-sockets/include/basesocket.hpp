@@ -29,6 +29,7 @@ public:
     const uint16_t BUFFER_SIZE = 0xFFFF;
     sockaddr_in address;
     bool isClosed = false;
+    bool isConnecting = false;
 
 protected:
     int sock = 0;
